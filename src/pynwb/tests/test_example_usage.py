@@ -1,4 +1,6 @@
 """An example of how to use the ndx-pose extension, packaged as a test so that it is run by pytest."""
+
+
 def test_example_usage():
     import datetime
     import numpy as np
@@ -13,6 +15,7 @@ def test_example_usage():
         Skeletons,
         TrainingFrames,
         SourceVideos,
+        SkeletonInstances,
     )
     from pynwb.image import ImageSeries
 
@@ -97,7 +100,9 @@ def test_example_usage():
         description="Estimated positions of front paws using DeepLabCut.",
         original_videos=["path/to/camera1.mp4"],
         labeled_videos=["path/to/camera1_labeled.mp4"],
-        dimensions=np.array([[640, 480]], dtype="uint16"),  # pixel dimensions of the video
+        dimensions=np.array(
+            [[640, 480]], dtype="uint16"
+        ),  # pixel dimensions of the video
         devices=[camera1],
         scorer="DLC_resnet50_openfieldOct30shuffle1_1600",
         source_software="DeepLabCut",
