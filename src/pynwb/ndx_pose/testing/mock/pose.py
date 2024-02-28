@@ -134,6 +134,7 @@ def mock_PoseEstimation(
 
 def mock_SkeletonInstance(
     *,
+    name: Optional[str] = None,
     id: Optional[np.uint] = np.uint(10),
     node_locations: Optional[Any] = None,
     node_visibility: list = None,
@@ -155,15 +156,30 @@ def mock_SkeletonInstance(
         node_locations = np.arange(num_nodes * 2, dtype=np.float64).reshape(
             (num_nodes, 2)
         )
+
+    if name is None:
+        name = skeleton.name + "_instance_" + str(id)
     if node_visibility is None:
         node_visibility = np.ones(num_nodes, dtype="bool")
     skeleton_instance = SkeletonInstance(
+        name=name,
         id=id,
         node_locations=node_locations,
         node_visibility=node_visibility,
         skeleton=skeleton,
     )
+
     return skeleton_instance
+
+
+def mock_SkeletonInstances(skeleton_instances=None):
+    if skeleton_instances is None:
+        skeleton_instances = [mock_SkeletonInstance()]
+    if not isinstance(skeleton_instances, list):
+        skeleton_instances = [skeleton_instances]
+    return SkeletonInstances(
+        skeleton_instances=skeleton_instances,
+    )
 
 
 def mock_source_video(
@@ -202,7 +218,7 @@ def mock_TrainingFrame(
     training_frame = TrainingFrame(
         name=name or name_generator("TrainingFrame"),
         annotator=annotator,
-        skeleton_instances=skeleton_instances,
+        skeleton_instances=skeleton_instances or mock_SkeletonInstances(),
         source_video=source_video
         or (mock_source_video() if source_frame is None else None),
         source_frame=source_frame,
