@@ -11,6 +11,7 @@ from ndx_pose import (
     Skeletons,
     SourceVideos,
     TrainingFrames,
+    SkeletonInstance,
     SkeletonInstances,
 )
 from ndx_pose.testing.mock.pose import (
@@ -18,6 +19,7 @@ from ndx_pose.testing.mock.pose import (
     mock_Skeleton,
     mock_PoseEstimation,
     mock_SkeletonInstance,
+    mock_SkeletonInstances,
     mock_TrainingFrame,
     mock_source_video,
 )
@@ -240,16 +242,25 @@ class TestPoseTrainingRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
         skeleton2 = mock_Skeleton(name="subject2")
         source_video = mock_source_video(name="source_video")
         sk1_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton1)
+        sk1_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton1)
+        sk1_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk1_instance10, sk1_instance11]
+        )
         sk1_training_frame = mock_TrainingFrame(
             name="skeleton1_frame10",
-            skeleton_instances=sk1_instance10,
+            skeleton_instances=sk1_instances,
             source_video=source_video,
             source_video_frame_index=np.uint(10),
         )
         sk2_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton2)
+        sk2_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton2)
+        sk2_instance12 = mock_SkeletonInstance(id=np.uint(12), skeleton=skeleton2)
+        sk2_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk2_instance10, sk2_instance11, sk2_instance12]
+        )
         sk2_training_frame = mock_TrainingFrame(
             name="skeleton2_frame10",
-            skeleton_instances=sk2_instance10,
+            skeleton_instances=sk2_instances,
             source_video=source_video,
             source_video_frame_index=np.uint(10),
         )

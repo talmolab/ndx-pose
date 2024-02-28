@@ -20,6 +20,7 @@ from ndx_pose import (
 )
 from ndx_pose.testing.mock.pose import (
     mock_PoseEstimationSeries,
+    mock_SkeletonInstances,
     mock_source_video,
     mock_source_frame,
     mock_Skeleton,
@@ -263,36 +264,36 @@ class TestSkeletonInstance(TestCase):
 
 class TestTrainingFrame(TestCase):
     def test_constructor(self):
-        skeleton_instance = mock_SkeletonInstance()
+        skeleton_instances = mock_SkeletonInstances()
         source_video = mock_source_video(name="source_video")
         training_frame = TrainingFrame(
             name="frame0",
             annotator="Awesome Possum",
-            skeleton_instance=skeleton_instance,
+            skeleton_instances=skeleton_instances,
             source_video=source_video,
             source_video_frame_index=np.uint(0),
         )
         self.assertEqual(training_frame.name, "frame0")
         self.assertEqual(training_frame.annotator, "Awesome Possum")
-        self.assertIs(training_frame.skeleton_instance, skeleton_instance)
+        self.assertIs(training_frame.skeleton_instances, skeleton_instances)
         self.assertIs(training_frame.source_video, source_video)
         self.assertEqual(training_frame.source_video_frame_index, np.uint(0))
 
 
 class TestTrainingFrameImage(TestCase):
     def test_constructor(self):
-        skeleton_instance = mock_SkeletonInstance()
+        skeleton_instances = mock_SkeletonInstances()
         source_frame = mock_source_frame(name="frame0_image")
         training_frame = TrainingFrame(
             name="frame0",
             annotator="Awesome Possum",
-            skeleton_instance=skeleton_instance,
+            skeleton_instances=skeleton_instances,
             source_frame=source_frame,
             source_video_frame_index=np.uint(0),
         )
         self.assertEqual(training_frame.name, "frame0")
         self.assertEqual(training_frame.annotator, "Awesome Possum")
-        self.assertIs(training_frame.skeleton_instance, skeleton_instance)
+        self.assertIs(training_frame.skeleton_instances, skeleton_instances)
         self.assertIs(training_frame.source_frame, source_frame)
         self.assertEqual(training_frame.source_video_frame_index, np.uint(0))
 
@@ -303,16 +304,25 @@ class TestPoseTraining(TestCase):
         skeleton2 = mock_Skeleton(name="subject2")
         source_video = mock_source_video(name="source_video")
         sk1_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton1)
+        sk1_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton1)
+        sk1_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk1_instance10, sk1_instance11]
+        )
         sk1_training_frame = mock_TrainingFrame(
             name="skeleton1_frame10",
-            skeleton_instance=sk1_instance10,
+            skeleton_instances=sk1_instances,
             source_video=source_video,
             source_video_frame_index=np.uint(10),
         )
         sk2_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton2)
+        sk2_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton2)
+        sk2_instance12 = mock_SkeletonInstance(id=np.uint(12), skeleton=skeleton2)
+        sk2_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk2_instance10, sk2_instance11, sk2_instance12]
+        )
         sk2_training_frame = mock_TrainingFrame(
             name="skeleton2_frame10",
-            skeleton_instance=sk2_instance10,
+            skeleton_instances=sk2_instances,
             source_video=source_video,
             source_video_frame_index=np.uint(10),
         )
@@ -352,18 +362,28 @@ class TestPoseTrainingImages(TestCase):
         skeleton2 = mock_Skeleton(name="subject2")
         source_frame_10 = mock_source_frame(name="source_frame_10")
         sk1_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton1)
+        sk1_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton1)
+        sk1_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk1_instance10, sk1_instance11]
+        )
         sk1_training_frame = mock_TrainingFrame(
             name="frame10",
-            skeleton_instance=sk1_instance10,
+            skeleton_instances=sk1_instances,
             source_frame=source_frame_10,
             source_video_frame_index=np.uint(10),
         )
 
         source_frame_11 = mock_source_frame(name="source_frame_11")
+
+        sk2_instance10 = mock_SkeletonInstance(id=np.uint(10), skeleton=skeleton2)
         sk2_instance11 = mock_SkeletonInstance(id=np.uint(11), skeleton=skeleton2)
+        sk2_instance12 = mock_SkeletonInstance(id=np.uint(12), skeleton=skeleton2)
+        sk2_instances = mock_SkeletonInstances(
+            skeleton_instances=[sk2_instance10, sk2_instance11, sk2_instance12]
+        )
         sk2_training_frame = mock_TrainingFrame(
             name="frame11",
-            skeleton_instance=sk2_instance11,
+            skeleton_instances=sk2_instances,
             source_frame=source_frame_11,
             source_video_frame_index=np.uint(11),
         )
