@@ -215,7 +215,6 @@ def main():
         neurodata_type_inc="NWBDataInterface",
         doc=(
             "Group that holds ground-truth pose data for a single instance of a skeleton in a single frame. "
-            "This is meant to be used within a TrainingFrame."
         ),
         default_name="skeleton_instance",
         links=[
@@ -257,6 +256,23 @@ def main():
         ],
     )
 
+    skeleton_instances = NWBGroupSpec(
+        neurodata_type_def="SkeletonInstances",
+        neurodata_type_inc="NWBDataInterface",
+        doc=(
+            "Organizational group to hold skeleton instances."
+            "This is meant to be used within a TrainingFrame."
+        ),
+        default_name="skeleton_instances",
+        groups=[
+            NWBGroupSpec(
+                neurodata_type_inc="SkeletonInstance",
+                doc="Ground-truth position data for a single instance of a skeleton in a single training frame.",
+                quantity="*",
+            ),
+        ],
+    )
+
     source_videos = NWBGroupSpec(
         neurodata_type_def="SourceVideos",
         neurodata_type_inc="NWBDataInterface",
@@ -279,9 +295,9 @@ def main():
         default_name="TrainingFrame",
         groups=[
             NWBGroupSpec(
-                name="skeleton_instance",
-                neurodata_type_inc="SkeletonInstance",
-                doc="Position data for a single instance of a skeleton in a single training frame.",
+                name="skeleton_instances",
+                neurodata_type_inc="SkeletonInstances",
+                doc="Position data for all instances of a skeleton in a single training frame.",
             ),
         ],
         attributes=[
@@ -373,6 +389,7 @@ def main():
         training_frame,
         skeleton_instance,
         training_frames,
+        skeleton_instances,
         source_videos,
         skeletons,
         pose_training,
