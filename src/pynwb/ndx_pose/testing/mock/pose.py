@@ -198,6 +198,11 @@ def mock_source_video(
     )
     return source_video
 
+def mock_source_frame(
+    *,
+    name: Optional[str] = None,
+):
+    return RGBImage(name=name, data=np.random.rand(640, 480, 3).astype("uint8"))
 
 def mock_source_frame(
     *,
